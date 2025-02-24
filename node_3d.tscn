@@ -1,0 +1,69 @@
+[gd_scene load_steps=12 format=3 uid="uid://cwfka1ja4iuw5"]
+
+[ext_resource type="Script" path="res://rigid_body_3d_cam.gd" id="1_2abxa"]
+[ext_resource type="PackedScene" uid="uid://cp5l2bf2kk2l" path="res://rigid_body_3d.tscn" id="1_s18y6"]
+[ext_resource type="Texture2D" uid="uid://hhgtdjjoxroc" path="res://angry.webp" id="2_akvkr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e7fbn"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_xxb6q"]
+sky_material = SubResource("ProceduralSkyMaterial_e7fbn")
+
+[sub_resource type="Environment" id="Environment_wgtju"]
+background_mode = 2
+sky = SubResource("Sky_xxb6q")
+sky_custom_fov = 151.6
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_760yc"]
+albedo_color = Color(0.490196, 0.627451, 0.647059, 1)
+
+[sub_resource type="Environment" id="Environment_ld31m"]
+ssr_enabled = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_emrv3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ol7yj"]
+albedo_texture = ExtResource("2_akvkr")
+
+[sub_resource type="SphereMesh" id="SphereMesh_sqfn3"]
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_energy = 2.955
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wgtju")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(45.7488, 0, 0, 0, 0.993081, 0, 0, 0, 14.8013, -24.5168, 0.0124061, -15.463)
+material_override = SubResource("StandardMaterial3D_760yc")
+use_collision = true
+size = Vector3(2.98779, 1, 13.2318)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00460577, 1.19697, 1.50017)
+can_sleep = false
+angular_damp = 1.19
+script = ExtResource("1_2abxa")
+target = NodePath("../TheBox")
+
+[node name="Camera3D" type="Camera3D" parent="RigidBody3D"]
+environment = SubResource("Environment_ld31m")
+current = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_emrv3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+material_override = SubResource("StandardMaterial3D_ol7yj")
+mesh = SubResource("SphereMesh_sqfn3")
+
+[node name="TheBox" parent="." instance=ExtResource("1_s18y6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.249562, 1.80494, -1.53913)

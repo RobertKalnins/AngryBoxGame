@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://cp5l2bf2kk2l"]
+
+[ext_resource type="Script" path="res://rigid_body_3d.gd" id="1_3rqfm"]
+[ext_resource type="Texture2D" uid="uid://hhgtdjjoxroc" path="res://angry.webp" id="2_gd8jp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ph5wr"]
+albedo_texture = ExtResource("2_gd8jp")
+
+[sub_resource type="BoxMesh" id="BoxMesh_poduf"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_kmviv"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[node name="RigidBody3D" type="RigidBody3D"]
+script = ExtResource("1_3rqfm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00564611, 0, -0.00298905)
+material_override = SubResource("StandardMaterial3D_ph5wr")
+mesh = SubResource("BoxMesh_poduf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00564611, 0, -0.00298905)
+shape = SubResource("ConvexPolygonShape3D_kmviv")
